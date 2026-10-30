@@ -23,7 +23,7 @@ var VV_BASE=(document.currentScript&&document.currentScript.src)?document.curren
   function toca(){ if(pausado||!visivel||document.hidden) vid.pause(); else { var p=vid.play(); if(p&&p.catch) p.catch(function(){}); }
     bp.classList.toggle('parado',pausado); bp.setAttribute('aria-label',pausado?'Tocar o vídeo':'Pausar o vídeo'); }
   function fonte(){ var f=window.matchMedia(EM_PE).matches?'9x16':'16x9'; if(vid.dataset.fmt===f) return;
-    vid.dataset.fmt=f; vid.poster=VV_BASE+'video/BFV26_LP_concurso_topo_'+f+'_poster.jpg?v=5'; vid.src=VV_BASE+'video/BFV26_LP_concurso_topo_'+f+'_web.mp4?v=5'; toca(); }
+    vid.dataset.fmt=f; vid.poster=VV_BASE+'video/BFV26_LP_concurso_topo_'+f+'_poster.jpg?v=6'; vid.src=VV_BASE+'video/BFV26_LP_concurso_topo_'+f+'_web.mp4?v=6'; toca(); }
   fonte(); window.matchMedia(EM_PE).addEventListener('change',fonte);
   bp.addEventListener('click',function(){ pausado=!pausado; toca(); });
   new IntersectionObserver(function(es){ visivel=es[0].isIntersecting; toca(); }).observe(hero);
