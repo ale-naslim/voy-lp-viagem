@@ -1,13 +1,13 @@
 var VV_BASE=(document.currentScript&&document.currentScript.src)?document.currentScript.src.replace(/[^\/]*$/,''):'';
 
 (function(){
-  var API='https://script.google.com/macros/s/AKfycbyUhWhsCt2r6xUu8RYc9qwdD41X-7SlS_L6oshyOsyohnlA2XLJmSxXz9ySBKsMdDTTjA/exec', NONCE='voy_bf26_17f72bae138c733b', VERSAO_REGULAMENTO='tc-v3-2026-11-03';
+  var API='https://script.google.com/macros/s/AKfycbyUhWhsCt2r6xUu8RYc9qwdD41X-7SlS_L6oshyOsyohnlA2XLJmSxXz9ySBKsMdDTTjA/exec', NONCE='voy_bf26_17f72bae138c733b', VERSAO_REGULAMENTO='tc-v4-2026-11-06';
 
-  var inicio=new Date('2026-11-03T00:00:00-03:00').getTime(), fim=new Date('2026-12-06T23:59:59-03:00').getTime();
+  var inicio=new Date('2026-11-09T00:00:00-03:00').getTime(), fim=new Date('2026-12-06T23:59:59-03:00').getTime();
   var agora=Date.now(), previa=/\.(pages\.dev|webflow\.io)$/.test(location.hostname)||location.protocol==='file:';
   var fase=agora>fim?'fim':(agora<inicio&&!previa?'antes':'aberto');
   var dias=Math.ceil((fim-agora)/86400000), el=document.getElementById('faltam');
-  el.textContent=fase==='fim'?'inscrições encerradas':fase==='antes'?'abrem em 03/11':dias>1?'faltam '+dias+' dias':'último dia';
+  el.textContent=fase==='fim'?'inscrições encerradas':fase==='antes'?'abrem em 09/11':dias>1?'faltam '+dias+' dias':'último dia';
 
   var topo=document.getElementById('topo'), fixo=document.getElementById('fixo'), hero=document.querySelector('.hero'), form=document.getElementById('participar'), fimPagina=document.querySelector('.seam--rodape');
   function onScroll(){
@@ -53,7 +53,7 @@ var VV_BASE=(document.currentScript&&document.currentScript.src)?document.curren
   var envioErro=document.getElementById('envioErro'), btEnvio=formEl.querySelector('button[type=submit]');
   var FALHA='Não foi possível enviar agora. Tente de novo em instantes.';
   function falhou(msg){ envioErro.textContent=msg; envioErro.hidden=false; }
-  if(fase!=='aberto'){ formEl.hidden=true; document.getElementById('fechadoTxt').textContent=fase==='fim'?'As inscrições foram encerradas. O resultado sai em 10/12/2026.':'As inscrições abrem em 03/11/2026.'; document.getElementById('fechado').hidden=false; }
+  if(fase!=='aberto'){ formEl.hidden=true; document.getElementById('fechadoTxt').textContent=fase==='fim'?'As inscrições foram encerradas. O resultado sai em 10/12/2026.':'As inscrições abrem em 09/11/2026.'; document.getElementById('fechado').hidden=false; }
   function utm(k){ return new URLSearchParams(location.search).get('utm_'+k)||''; }
   formEl.addEventListener('submit',function(e){
     e.preventDefault();
