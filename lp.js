@@ -1,13 +1,13 @@
 var VV_BASE=(document.currentScript&&document.currentScript.src)?document.currentScript.src.replace(/[^\/]*$/,''):'';
 
 (function(){
-  var API='https://script.google.com/macros/s/AKfycbyUhWhsCt2r6xUu8RYc9qwdD41X-7SlS_L6oshyOsyohnlA2XLJmSxXz9ySBKsMdDTTjA/exec', NONCE='voy_bf26_17f72bae138c733b', VERSAO_REGULAMENTO='rascunho-2026-10-30';
+  var API='https://script.google.com/macros/s/AKfycbyUhWhsCt2r6xUu8RYc9qwdD41X-7SlS_L6oshyOsyohnlA2XLJmSxXz9ySBKsMdDTTjA/exec', NONCE='voy_bf26_17f72bae138c733b', VERSAO_REGULAMENTO='tc-v3-2026-11-03';
 
-  var inicio=new Date('2026-11-01T00:00:00-03:00').getTime(), fim=new Date('2026-12-02T23:59:59-03:00').getTime();
+  var inicio=new Date('2026-11-03T00:00:00-03:00').getTime(), fim=new Date('2026-12-06T23:59:59-03:00').getTime();
   var agora=Date.now(), previa=/\.(pages\.dev|webflow\.io)$/.test(location.hostname)||location.protocol==='file:';
   var fase=agora>fim?'fim':(agora<inicio&&!previa?'antes':'aberto');
   var dias=Math.ceil((fim-agora)/86400000), el=document.getElementById('faltam');
-  el.textContent=fase==='fim'?'inscrições encerradas':fase==='antes'?'abrem em 01/11':dias>1?'faltam '+dias+' dias':'último dia';
+  el.textContent=fase==='fim'?'inscrições encerradas':fase==='antes'?'abrem em 03/11':dias>1?'faltam '+dias+' dias':'último dia';
 
   var topo=document.getElementById('topo'), fixo=document.getElementById('fixo'), hero=document.querySelector('.hero'), form=document.getElementById('participar'), fimPagina=document.querySelector('.seam--rodape');
   function onScroll(){
@@ -38,7 +38,7 @@ var VV_BASE=(document.currentScript&&document.currentScript.src)?document.curren
     else if(d.length>2) tel.value=d.replace(/(\d{2})(\d{0,5})/,'($1) $2');
     else tel.value=d; });
   var medidor=form.querySelector('.medidor i');
-  resp.addEventListener('input',function(){ conta.textContent=resp.value.length+'/300'; medidor.style.setProperty('--p',resp.value.length/300); });
+  resp.addEventListener('input',function(){ conta.textContent=resp.value.length+'/500'; medidor.style.setProperty('--p',resp.value.length/500); });
   resp.addEventListener('focus',function(){ form.classList.add('escrevendo'); });
   resp.addEventListener('blur',function(){ form.classList.remove('escrevendo'); });
   new IntersectionObserver(function(es){ form.classList.toggle('visivel',es[0].isIntersecting); }).observe(form);
@@ -53,7 +53,7 @@ var VV_BASE=(document.currentScript&&document.currentScript.src)?document.curren
   var envioErro=document.getElementById('envioErro'), btEnvio=formEl.querySelector('button[type=submit]');
   var FALHA='Não foi possível enviar agora. Tente de novo em instantes.';
   function falhou(msg){ envioErro.textContent=msg; envioErro.hidden=false; }
-  if(fase!=='aberto'){ formEl.hidden=true; document.getElementById('fechadoTxt').textContent=fase==='fim'?'As inscrições foram encerradas. O resultado sai em 10/12/2026.':'As inscrições abrem em 01/11/2026.'; document.getElementById('fechado').hidden=false; }
+  if(fase!=='aberto'){ formEl.hidden=true; document.getElementById('fechadoTxt').textContent=fase==='fim'?'As inscrições foram encerradas. O resultado sai em 10/12/2026.':'As inscrições abrem em 03/11/2026.'; document.getElementById('fechado').hidden=false; }
   function utm(k){ return new URLSearchParams(location.search).get('utm_'+k)||''; }
   formEl.addEventListener('submit',function(e){
     e.preventDefault();
@@ -81,4 +81,16 @@ var VV_BASE=(document.currentScript&&document.currentScript.src)?document.curren
     }).catch(function(){ falhou(FALHA); }).then(function(){ clearTimeout(vigia); enviando=false; btEnvio.disabled=false; btEnvio.textContent=rotulo; });
   });
   document.getElementById('voltar').addEventListener('click',function(){ folha.classList.remove('enviado'); form.classList.remove('enviado'); });
+
+  var reg=document.getElementById('regDialog'), overflowAntes='';
+  function abreReg(){ if(!reg||reg.open) return; overflowAntes=document.documentElement.style.overflow; document.documentElement.style.overflow='hidden';
+    if(reg.showModal) reg.showModal(); else reg.setAttribute('open',''); var c=reg.querySelector('.reg-corpo'); if(c) c.scrollTop=0; }
+  function fechaReg(){ if(!reg) return; if(reg.close) reg.close(); else reg.removeAttribute('open'); }
+  if(reg){
+    reg.addEventListener('close',function(){ document.documentElement.style.overflow=overflowAntes; });
+    reg.addEventListener('click',function(e){ if(e.target===reg) fechaReg(); });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-abre-regulamento]'),function(b){ b.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); abreReg(); }); });
+    Array.prototype.forEach.call(reg.querySelectorAll('[data-fecha-regulamento]'),function(b){ b.addEventListener('click',fechaReg); });
+    if(location.hash==='#regulamento') abreReg();
+  }
 })();
