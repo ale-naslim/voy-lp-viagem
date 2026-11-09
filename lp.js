@@ -72,7 +72,7 @@ var VV_BASE=(document.currentScript&&document.currentScript.src)?document.curren
     fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},signal:ctl.signal,body:JSON.stringify({
       nonce:NONCE, campo_extra:document.getElementById('campoExtra').value, t_ms:Date.now()-t0,
       nome:document.getElementById('nome').value, cpf:cpf.value, tel:tel.value, email:document.getElementById('email').value, resposta:resp.value,
-      aceite:ac.checked, optin:document.getElementById('optin').checked, versao:VERSAO_REGULAMENTO, pagina:location.origin+location.pathname,
+      aceite:ac.checked, versao:VERSAO_REGULAMENTO, pagina:location.origin+location.pathname,
       utm_source:utm('source'), utm_medium:utm('medium'), utm_campaign:utm('campaign'), utm_content:utm('content'), utm_term:utm('term')
     })}).then(function(r){ return r.json(); }).then(function(r){
       if(r.ok){ folha.classList.add('enviado'); form.classList.add('enviado'); folha.scrollIntoView({block:'center'}); return; }
