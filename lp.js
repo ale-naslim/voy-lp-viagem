@@ -55,6 +55,20 @@ var VV_BASE=(document.currentScript&&document.currentScript.src)?document.curren
   function falhou(msg){ envioErro.textContent=msg; envioErro.hidden=false; }
   if(fase!=='aberto'){ formEl.hidden=true; document.getElementById('fechadoTxt').textContent=fase==='fim'?'As inscrições foram encerradas. O resultado sai em 10/12/2026.':'As inscrições abrem em 09/11/2026.'; document.getElementById('fechado').hidden=false; }
   function utm(k){ return new URLSearchParams(location.search).get('utm_'+k)||''; }
+  var CIO_SITE='be738c7be9baba0130df', CIO_URL='https://customerioforms.com/custom_forms/submit_snippet';
+  function enviaCio(){
+    if(!/(^|\.)voysaude\.com\.br$/.test(location.hostname)) return;
+    try{
+      var q=[]; function add(k,v){ q.push(encodeURIComponent(k)+'='+encodeURIComponent(v)); }
+      add('nome',document.getElementById('nome').value.trim()); add('tel',tel.value); add('email',document.getElementById('email').value.trim());
+      if(document.getElementById('aceite').checked) add('checkbox_1','on');
+      if(document.getElementById('optin').checked) add('checkbox_2','on');
+      add('_cio_html_form_id','form'); add('_cio_html_form_name',''); add('_cio_html_form_url',location.href);
+      ['text_1','nome','cpf','tel','email','resposta','checkbox_1','checkbox_2'].forEach(function(n){ add('_cio_html_form_inputs',n); });
+      add('_cio_site_id',CIO_SITE);
+      fetch(CIO_URL,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'application/x-www-form-urlencoded'},body:q.join('&')}).catch(function(){});
+    }catch(e){}
+  }
   formEl.addEventListener('submit',function(e){
     e.preventDefault();
     var erros=0, v;
@@ -75,7 +89,7 @@ var VV_BASE=(document.currentScript&&document.currentScript.src)?document.curren
       aceite:ac.checked, optin:document.getElementById('optin').checked, versao:VERSAO_REGULAMENTO, pagina:location.origin+location.pathname,
       utm_source:utm('source'), utm_medium:utm('medium'), utm_campaign:utm('campaign'), utm_content:utm('content'), utm_term:utm('term')
     })}).then(function(r){ return r.json(); }).then(function(r){
-      if(r.ok){ folha.classList.add('enviado'); form.classList.add('enviado'); folha.scrollIntoView({block:'center'}); return; }
+      if(r.ok){ enviaCio(); folha.classList.add('enviado'); form.classList.add('enviado'); folha.scrollIntoView({block:'center'}); return; }
       if(r.erro==='cpf_repetido'){ marca('cpf','Este CPF já tem uma inscrição.'); cpf.focus(); return; }
       falhou(r.erro==='encerrado'?'As inscrições foram encerradas.':FALHA);
     }).catch(function(){ falhou(FALHA); }).then(function(){ clearTimeout(vigia); enviando=false; btEnvio.disabled=false; btEnvio.textContent=rotulo; });
